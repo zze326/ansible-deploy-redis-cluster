@@ -1,3 +1,5 @@
+# Ansible 部署 Redis 集群
+
 > 下面所有操作在 Ubuntu 18.04 中进行。
 
 此 Ansible 的功能为构建 Redis 集群，会在每个目标主机中部署两个 Redis 实例，下面演示构建一个 3 节点 6 实例的 Redis 集群。
