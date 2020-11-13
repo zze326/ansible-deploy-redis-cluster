@@ -1,0 +1,4 @@
+- import_tasks: configure_master.yml
+  tags: configure_master
+- import_tasks: configure_slave.yml
+  tags: configure_slave

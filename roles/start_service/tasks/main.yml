@@ -1,0 +1,14 @@
+- name: 启动 Redis 主实例
+  systemd:
+    name: 'redis-{{ master_port }}'
+    state: started
+
+- name: 启动 Redis 从实例
+  systemd:
+    name: 'redis-{{ slave_port }}'
+    state: started
+
+- name: 打印构建 Redis 集群的命令
+  run_once: yes
+  debug:
+    msg: 'redis-cli {% if password is defined %}-a {{ password }}{% endif %} --cluster create {% for host in groups["all"] %}{{ host }}:{{ master_port }} {% endfor %}{% for host in groups["all"] %}{{ host }}:{{ slave_port }} {% endfor %}--cluster-replicas {{ cluster_replicas }}'

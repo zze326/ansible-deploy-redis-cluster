@@ -1,0 +1,19 @@
+- name: 渲染 Redis 主实例配置文件
+  template:
+    src: master_redis.conf
+    dest: '{{ install_dir }}/redis_{{ master_port }}/conf/redis.conf'
+    owner: redis
+    group: redis
+  register: configure_master_result
+
+- name: 渲染 Redis 主实例的 Systemd Service Unit 配置文件
+  template:
+    src: master_redis.service
+    dest: '{% if ansible_distribution == "CentOS" %}/usr{% endif %}/lib/systemd/system/redis-{{ master_port }}.service'
+
+- name: 重启 Redis 主实例
+  systemd:
+    name: 'redis-{{ master_port }}'
+    daemon_reload: yes
+    state: restarted
+  when: configure_master_result is changed
